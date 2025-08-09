@@ -3,7 +3,7 @@ package com.example.task.presentation.screens.wallet
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.task.data.locale.cards.CardsRepositoryImpl
-import com.example.task.domain.cards.CardsUseCase
+import com.example.task.domain.cards.GetCardsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class WalletViewModel : ViewModel() {
 
-    private val cardsUseCase = CardsUseCase(CardsRepositoryImpl())
+    private val cardsUseCase = GetCardsUseCase(CardsRepositoryImpl())
     private val _state = MutableStateFlow(WalletScreenState())
     val state = _state.asStateFlow()
 
@@ -63,7 +63,7 @@ class WalletViewModel : ViewModel() {
             }
             WalletScreenIntents.GetCards -> {
                 viewModelScope.launch {
-                    cardsUseCase.getCards().collect { cards ->
+                    cardsUseCase.invoke().collect { cards ->
                         _state.update { state ->
                             val selectedId = state.enabledCardId
                             val merged = cards.map { dbCard ->

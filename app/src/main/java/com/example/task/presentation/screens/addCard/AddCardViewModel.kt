@@ -3,7 +3,7 @@ package com.example.task.presentation.screens.addCard
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.task.data.locale.cards.CardsRepositoryImpl
-import com.example.task.domain.cards.CardsUseCase
+import com.example.task.domain.cards.AddCardUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class AddCardViewModel : ViewModel() {
 
-    private val useCase = CardsUseCase(CardsRepositoryImpl())
+    private val useCase = AddCardUseCase(CardsRepositoryImpl())
     private val _state = MutableStateFlow(AddCardState())
     val state = _state.asStateFlow()
 
@@ -35,7 +35,7 @@ class AddCardViewModel : ViewModel() {
 
     private fun handleAddCard(number: String) {
         viewModelScope.launch {
-            useCase.addCard(number).collect { unit ->
+            useCase.invoke(number).collect { unit ->
                 _state.update {
                     it.copy(addedNewCard = unit)
                 }
