@@ -20,33 +20,10 @@ class WalletViewModel : ViewModel() {
             is WalletScreenIntents.ShowPromoSheet -> {
                 _state.update { it.copy(showPromoBottomSheet = intent.show) }
             }
-            is WalletScreenIntents.CashMethodEnable -> {
+            is WalletScreenIntents.SelectMethod -> {
                 _state.update { state ->
                     if (intent.enable) {
                         state.copy(
-                            cashEnabled = true,
-                            cards = state.cards.map { it.copy(isSelected = false) }
-                        )
-                    } else {
-                        if (state.cards.isNotEmpty()) {
-                            state.copy(
-                                cashEnabled = false,
-                                cards = state.cards.mapIndexed { index, card ->
-                                    card.copy(isSelected = index == 0)
-                                }
-                            )
-                        } else {
-                            state.copy(cashEnabled = false)
-                        }
-                    }
-                }
-            }
-
-            is WalletScreenIntents.CardMethodEnable -> {
-                _state.update { state ->
-                    if (intent.enable) {
-                        state.copy(
-                            cashEnabled = false,
                             cards = state.cards.map { card ->
                                 card.copy(isSelected = card.id == intent.cardId)
                             },
@@ -54,9 +31,15 @@ class WalletViewModel : ViewModel() {
                         )
                     } else {
                         state.copy(
-                            cashEnabled = true,
-                            cards = state.cards.map { it.copy(isSelected = false) },
-                            enabledCardId = null
+
+                            cards = state.cards.map { card ->
+                                if(intent.cardId != 0) {
+                                    card.copy(isSelected = 0 == card.id)
+                                }else {
+                                    card.copy(isSelected = 1 == card.id)
+                                }
+                            },
+                            enabledCardId = if(intent.cardId == 0)  1 else 0
                         )
                     }
                 }

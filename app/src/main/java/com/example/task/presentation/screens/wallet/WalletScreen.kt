@@ -144,33 +144,32 @@ fun WalletScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            WalletAdditionalCard(
-                modifier = Modifier.padding(horizontal = 15.dp),
-                icon = R.drawable.ic_cash,
-                text = "Cash",
-                enabledSwitch = true,
-                isChecked = state.cashEnabled,
-                onCheckedChange = { checked->
-                    viewModel.handleIntent(WalletScreenIntents.CashMethodEnable(checked))
-                }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.padding(horizontal = 15.dp)
             ) {
                 state.cards.forEach { card ->
-                    WalletAdditionalCard(
-                        icon = R.drawable.ic_cards,
-                        text = "Card ****${card.number.takeLast(4)}",
-                        enabledSwitch = true,
-                        isChecked = card.isSelected,
-                        onCheckedChange = { checked ->
-                            viewModel.handleIntent(WalletScreenIntents.CardMethodEnable(cardId = card.id, checked))
-                        }
-                    )
+                    if (card.id == 0) {
+                        WalletAdditionalCard(
+                            icon = R.drawable.ic_cash,
+                            text = "Cash",
+                            enabledSwitch = true,
+                            isChecked = card.isSelected,
+                            onCheckedChange = { checked ->
+                                viewModel.handleIntent(WalletScreenIntents.SelectMethod(cardId = 0, checked))
+                            }
+                        )
+                    } else {
+                        WalletAdditionalCard(
+                            icon = R.drawable.ic_cards,
+                            text = "Card ****${card.number.takeLast(4)}",
+                            enabledSwitch = true,
+                            isChecked = card.isSelected,
+                            onCheckedChange = { checked ->
+                                viewModel.handleIntent(WalletScreenIntents.SelectMethod(cardId = card.id, checked))
+                            }
+                        )
+                    }
                 }
             }
 

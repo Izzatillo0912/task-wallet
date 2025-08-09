@@ -3,6 +3,7 @@ package com.example.task.presentation.screens.wallet
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -52,12 +53,21 @@ fun BalanceCard(
             .padding(horizontal = 20.dp, vertical = 20.dp)
     ) {
         Column {
-            Text(
-                text = "Balance",
-                color = if (data.isSelected) Color.White else Color.Black,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Medium
-            )
+            Row {
+                Text(
+                    text = "Balance",
+                    color = if (data.isSelected) Color.White else Color.Black,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = data.method,
+                    color = if (data.isSelected) Color.White else Color.Black,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = data.balance.moneyFormat(),
@@ -67,7 +77,7 @@ fun BalanceCard(
             )
             Spacer(modifier = Modifier.height(25.dp))
             Text(
-                text = "${data.number.take(4)}  ****  ****  ${data.number.takeLast(4)}",
+                text = if(data.id == 0) "" else "${data.number.take(4)}  ****  ****  ${data.number.takeLast(4)}",
                 letterSpacing = TextUnit(2f, TextUnitType.Sp),
                 color = if (data.isSelected) Color.White else Color.Black,
                 fontSize = 20.sp,

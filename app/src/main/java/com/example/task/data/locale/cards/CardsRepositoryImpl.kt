@@ -21,6 +21,7 @@ class CardsRepositoryImpl : CardsRepository {
                     CardModel(
                         id = Cache.getCards().size,
                         number = number,
+                        method = "Card",
                         balance = (100_000..850_000).random().toDouble()
                     )
                 )
