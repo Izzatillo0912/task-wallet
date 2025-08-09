@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class AddCardViewModel : ViewModel() {
 
-    private val useCase = AddCardUseCase(CardsRepositoryImpl())
+    private val addCardUseCase = AddCardUseCase(CardsRepositoryImpl())
     private val _state = MutableStateFlow(AddCardState())
     val state = _state.asStateFlow()
 
@@ -35,7 +35,7 @@ class AddCardViewModel : ViewModel() {
 
     private fun handleAddCard(number: String) {
         viewModelScope.launch {
-            useCase.invoke(number).collect { unit ->
+            addCardUseCase.invoke(number).collect { unit ->
                 _state.update {
                     it.copy(addedNewCard = unit)
                 }

@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class WalletViewModel : ViewModel() {
 
-    private val cardsUseCase = GetCardsUseCase(CardsRepositoryImpl())
+    private val getCardsUseCase = GetCardsUseCase(CardsRepositoryImpl())
     private val _state = MutableStateFlow(WalletScreenState())
     val state = _state.asStateFlow()
 
@@ -46,7 +46,7 @@ class WalletViewModel : ViewModel() {
             }
             WalletScreenIntents.GetCards -> {
                 viewModelScope.launch {
-                    cardsUseCase.invoke().collect { cards ->
+                    getCardsUseCase.invoke().collect { cards ->
                         _state.update { state ->
                             val selectedId = state.enabledCardId
                             val merged = cards.map { dbCard ->
